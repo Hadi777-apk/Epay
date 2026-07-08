@@ -56,6 +56,7 @@ class Payment {
         global $cdnpublic,$order,$conf,$sitename,$ordername,$siteurl;
         $type = $result['type'];
         if(!$type) return false;
+        $allowed_pages = ['alipay_qrcode', 'alipay_wap', 'alipay_h5', 'alipay_jspay', 'wxpay_qrcode', 'wxpay_wap', 'wxpay_jspay', 'wxpay_h5', 'qqpay_qrcode', 'qqpay_wap', 'bank_qrcode', 'bank_h5', 'verify_jump', 'douyinpay_jspay', 'openid', 'wxtrans_confirm'];
         switch($type){
             case 'jump': //跳转
                 $selfurl = is_self_url($result['url']);
@@ -82,9 +83,8 @@ class Payment {
                 echo json_encode($result['data']);
                 break;
             case 'page': //显示指定页面
-                $allowed_pages = ['alipay_qrcode', 'alipay_wap', 'alipay_h5', 'alipay_jspay', 'wxpay_qrcode', 'wxpay_wap', 'wxpay_jspay', 'wxpay_h5', 'qqpay_qrcode', 'qqpay_wap', 'bank_qrcode', 'bank_h5', 'verify_jump', 'douyinpay_jspay', 'openid', 'wxtrans_confirm'];
                 if(!in_array($result['page'], $allowed_pages)) {
-                    showerror('invalid page');
+                    sysmsg('invalid page');
                 }
                 include_once SYSTEM_ROOT.'txprotect.php';
                 if(isset($result['data'])) extract($result['data']);
@@ -139,7 +139,7 @@ class Payment {
                     }
                 }
                 if(!in_array($result['page'], $allowed_pages)) {
-                    showerror('invalid page');
+                    sysmsg('invalid page');
                 }
                 include PAYPAGE_ROOT.$result['page'].'.php';
                 break;

@@ -67,12 +67,13 @@ class ApiHelper
     static public function api_verify($userrow, $queryArr, $forceRsa = false){
         if($forceRsa && $queryArr['sign_type'] != 'RSA')throw new Exception('该接口只能使用RSA签名类型');
         if($userrow['keytype'] == 1 && $queryArr['sign_type'] != 'RSA')throw new Exception('该商户只能使用RSA签名类型');
-        if(empty($queryArr['timestamp'])){
-            throw new Exception('timestamp 不能为空');
-        }
-        if(abs(time() - $queryArr['timestamp']) > 300){
-            throw new Exception('时间戳字段不正确，请检查服务器时间');
-        }
+        // timestamp 校验已绕过：new-api 旧版不发送 timestamp，签名校验仍保留
+        // if(empty($queryArr['timestamp'])){
+        //     throw new Exception('timestamp 不能为空');
+        // }
+        // if(abs(time() - $queryArr['timestamp']) > 300){
+        //     throw new Exception('时间戳字段不正确，请检查服务器时间');
+        // }
         if(!empty($queryArr['nonce'])){
             if(strlen($queryArr['nonce']) < 8){
                 throw new Exception('nonce 长度不能小于8位');

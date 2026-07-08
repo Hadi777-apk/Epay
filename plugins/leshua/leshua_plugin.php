@@ -132,6 +132,7 @@ class leshua_plugin
 			'notify_url' => $conf['localurl'] . 'pay/notify/' . TRADE_NO . '/',
 			'client_ip' => $clientip,
 			'nonce_str' => getSid(),
+			'timestamp' => time(),
 		];
 		//if($pay_way) $params['pay_way'] = $pay_way;
 		if($openid) $params['sub_openid'] = $openid;
